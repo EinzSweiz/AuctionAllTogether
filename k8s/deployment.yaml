@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auctionmaster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auctionmaster
+  template:
+    metadata:
+      labels:
+        app: auctionmaster
+    spec:
+      containers:
+      - name: auctionmaster
+        image: raidsulin/auctionmaster:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - protocol: 'TCP'
+          containerPort: 8080
+        env:
+          - name: DJANGO_SUPERUSER_EMAIL
+            value: "admin@example.com"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: auctionmaster-svc
+spec:
+  selector:
+    app: auctionmaster
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: LoadBalancer

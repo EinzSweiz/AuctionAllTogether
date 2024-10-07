@@ -14,9 +14,7 @@ django-debug-toolbar
 django-allauth-ui
 django-widget-tweaks
 slippers
-
-# can add gunicorn but maybe in docker file for deploy
-
+gunicorn
 
 #django-channels - can be added for customer service chat
 #will add django-defender

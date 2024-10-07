@@ -4,5 +4,9 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"terminal.integrated.env.linux": {
+			"KUBECONFIG": "/home/darkknight/Documents/AuctionAllTogether/k8s/config/k8s-1-31-1-do-1-fra1-1728292728712-kubeconfig.yaml"
+		}
+	}
 }
