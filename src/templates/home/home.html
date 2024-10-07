@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock  %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="bg-gray-200 py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl font-bold text-gray-800">Welcome to AuctionMaster</h1>
+            <p class="mt-4 text-lg text-gray-600">Find the best items at unbeatable prices!</p>
+            <a href="#" class="mt-8 inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">Start Bidding</a>
+        </div>
+    </section>
+
+    <!-- Featured Auctions Section -->
+    <section class="container mx-auto px-6 py-10">
+        <h2 class="text-2xl font-bold text-gray-800 text-center">Featured Auctions</h2>
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Example Auction Item -->
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <img src="https://via.placeholder.com/300" alt="Auction Item" class="rounded-lg">
+                <h3 class="text-lg font-semibold mt-2">Auction Item Title</h3>
+                <p class="text-gray-600">Starting Bid: $100</p>
+                <a href="#" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">View Details</a>
+            </div>
+            <!-- Repeat for more items -->
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <img src="https://via.placeholder.com/300" alt="Auction Item" class="rounded-lg">
+                <h3 class="text-lg font-semibold mt-2">Auction Item Title</h3>
+                <p class="text-gray-600">Starting Bid: $150</p>
+                <a href="#" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">View Details</a>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <img src="https://via.placeholder.com/300" alt="Auction Item" class="rounded-lg">
+                <h3 class="text-lg font-semibold mt-2">Auction Item Title</h3>
+                <p class="text-gray-600">Starting Bid: $200</p>
+                <a href="#" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">View Details</a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

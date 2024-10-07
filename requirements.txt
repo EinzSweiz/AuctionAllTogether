@@ -8,7 +8,13 @@ django-allauth[socialaccount]
 django-debug-toolbar
 pillow
 psycopg2-binary
-whitenoise  
+whitenoise
+django-tailwind[reload]
+django-debug-toolbar
+django-allauth-ui
+django-widget-tweaks
+slippers
+
 # can add gunicorn but maybe in docker file for deploy
 
 
