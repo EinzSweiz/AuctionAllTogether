@@ -1,0 +1,15 @@
+<div class="flex items-center mb-4">
+    {% if profile.profile_image %}
+        <a href="{{ profile.profile_image.url }}">
+            <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="rounded-full w-20 h-20 mr-4">
+        </a>
+    {% else %}
+        <div class="bg-gray-300 rounded-full w-20 h-20 mr-4"></div>
+    {% endif %}
+    <div>
+        <p><strong>Username:</strong> {{ profile.user.username }}</p>
+        <p><strong>Email:</strong> {{ profile.user.email|default:"Not provided" }}</p>
+        <p><strong>Phone Number:</strong> {{ profile.phone_number|default:"Not provided" }}</p>
+        <p><strong>Address:</strong> {{ profile.address|default:"Not provided" }}</p>
+    </div>
+</div>

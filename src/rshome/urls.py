@@ -19,11 +19,15 @@ from django.urls import path, include
 from django.conf import settings
 from debug_toolbar.toolbar import debug_toolbar_urls
 from . import views
+from customers import urls as customers_urls
+from auctions import urls as auctions_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', views.home, name='home')
+    path('', views.home, name='home'),
+    path('auctions/', include(auctions_urls, namespace='auctions')),
+    path('customers/', include(customers_urls, namespace='customers')),
 ]
 
 

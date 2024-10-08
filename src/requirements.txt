@@ -15,6 +15,7 @@ django-allauth-ui
 django-widget-tweaks
 slippers
 gunicorn
+boto3
 
 #django-channels - can be added for customer service chat
 #will add django-defender

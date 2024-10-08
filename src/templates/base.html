@@ -1,19 +1,52 @@
+{% load django_htmx %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+
   
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include 'snippets/navbar.html' %}
 
-    {% block content %}
+    {% include 'messages/messages.html' %}
 
-    {% endblock %}
+    <div class="flex flex-col min-h-screen">  <!-- Container for content and footer -->
+        <main class="flex-grow">  <!-- Main content area -->
+            {% block content %}
+            {% endblock %}
+        </main>
 
+        {% include 'snippets/footer.html' %}
+    </div>
+    <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js" integrity="sha384-BBDmZzVt6vjz5YbQqZPtFZW82o8QotoM7RUp5xOxV3nSJ8u2pSdtzFAbGKzTlKtg" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+
+          // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+        // Get the success message element
+        const successMessage = document.getElementById('success-message');
+        
+        // Check if the success message exists
+        if (successMessage) {
+            // Set a timeout to hide the message after 5 seconds
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    });
+      </script>
+
+      {% django_htmx_script %}
+      
 </body>
 </html>

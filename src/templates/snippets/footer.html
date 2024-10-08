@@ -1,0 +1,39 @@
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-6">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="flex flex-col lg:flex-row justify-between">
+            <!-- Links Section -->
+            <div class="mb-4 lg:mb-0">
+                <h5 class="text-lg font-semibold mb-2">Quick Links</h5>
+                <ul class="space-y-1">
+                    <li><a href="{% url 'home' %}" class="hover:underline">Home</a></li>
+                    <li><a href="{% url 'auctions:auction_list' %}" class="hover:underline">Auctions</a></li>
+                    <li><a href="#" class="hover:underline">Contact Us</a></li>
+                    <li><a href="#" class="hover:underline">About Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="mb-4 lg:mb-0">
+                <h5 class="text-lg font-semibold mb-2">Contact Us</h5>
+                <p>Email: <a href="mailto:info@example.com" class="hover:underline">auctions-helpers@gmail.com</a></p>
+                <p>Phone: <a href="tel:+1234567890" class="hover:underline">+48 453-504-632 </a></p>
+            </div>
+
+            <!-- Social Media Section -->
+            <div>
+                <h5 class="text-lg font-semibold mb-2">Follow Us</h5>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:underline">Facebook</a>
+                    <a href="#" class="hover:underline">Twitter</a>
+                    <a href="#" class="hover:underline">Instagram</a>
+                    <a href="#" class="hover:underline">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 border-t border-gray-700 pt-4 text-center">
+            <p class="text-sm">&copy; 2024 Auctions Easy. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

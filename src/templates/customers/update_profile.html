@@ -1,0 +1,44 @@
+<!-- Form to Update Profile -->
+<form method="post" enctype="multipart/form-data" 
+      hx-post="{% url 'customers:update_profile' %}" 
+      hx-target="#update-profile-container" 
+      hx-on="htmx:afterSwap: this.closest('#update-profile-container').style.display='none'" 
+      class="profile-info bg-white shadow-md rounded-lg p-6 mb-6">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <h2 class="text-xl font-semibold mb-4 text-gray-800">Update Your Information</h2>
+    
+    <div class="flex items-center mb-4">
+        {% if profile.profile_image %}
+            <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="rounded-full w-20 h-20 mr-4">
+        {% else %}
+            <div class="bg-gray-300 rounded-full w-20 h-20 mr-4"></div>
+        {% endif %}
+        <div class="text-gray-700">
+            <p><strong>Phone Number:</strong> {{ profile.phone_number|default:"Not provided" }}</p>
+            <p><strong>Address:</strong> {{ profile.address|default:"Not provided" }}</p>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+        {{ form.phone_number.errors }}
+        <input type="text" name="phone_number" id="phone_number" value="{{ form.phone_number.value }}" 
+               class="bg-gray-800 text-white border border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+               placeholder="Enter your phone number">
+    </div>
+    <div class="mb-4">
+        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+        {{ form.address.errors }}
+        <textarea name="address" id="address" 
+                  class="bg-gray-800 text-white border border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  placeholder="Enter your address">{{ form.address.value }}</textarea>
+    </div>
+    <div class="mb-4">
+        <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image</label>
+        {{ form.profile_image.errors }}
+        <input type="file" name="profile_image" id="profile_image" 
+               class="bg-gray-800 text-white border border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <button type="submit" class="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out">Update Profile</button>
+</form>
