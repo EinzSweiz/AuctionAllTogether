@@ -21,5 +21,6 @@ django-celery-beat
 django-celery-results
 redis
 flower
+dj-database-url
 #django-channels - can be added for customer service chat
 #will add django-defender

@@ -25,7 +25,7 @@
         <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {% for image in items_image %}
                 <li>
-                    <a href="{{ image.item.get_absolute_url }}"><img src="{{ image.image.url }}" alt="Item Image" class="rounded-lg shadow-lg h-60 w-50"></a>
+                    <a href="{{ image.item.get_absolute_url }}"><img src="{{ image.image.url }}" alt="Item Image" class="rounded-lg shadow-lg h-60 w-80"></a>
                 </li>
             {% empty %}
                 <li>No item images available.</li>

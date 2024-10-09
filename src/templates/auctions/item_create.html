@@ -46,11 +46,11 @@
             </div>
 
             <div class="mb-4">
-                {{ form.images.label }} (Upload multiple images)
-                <input type="file" name="{{ form.images.name }}" id="{{ form.images.id_for_label }}" 
-                       class="form-input bg-gray-800 text-white border border-gray-600 rounded-md p-2" multiple />
-                {% if form.images.errors %}
-                    <div class="text-red-600">{{ form.images.errors }}</div>
+                {{ form.image.label }}
+                <input type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}" 
+                       class="form-input bg-gray-800 text-white border border-gray-600 rounded-md p-2" />
+                {% if form.image.errors %}
+                    <div class="text-red-600">{{ form.image.errors }}</div>
                 {% endif %}
             </div>
         </div>

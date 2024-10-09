@@ -13,7 +13,10 @@ class Profile(models.Model):
     
     @property
     def items_images(self):
-        return ItemImage.objects.filter(item__owner=self.user)
+        try:
+            return ItemImage.objects.filter(item__owner=self.user)
+        except:
+            return None
 
     @property
     def bids_history(self):

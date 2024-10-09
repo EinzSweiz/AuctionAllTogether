@@ -1,0 +1,30 @@
+{% load forms_extras %}
+<form method="post" enctype="multipart/form-data" 
+      hx-post="{% url 'auctions:item_update' item.id %}" 
+      hx-target="#update-item" 
+      hx-on="htmx:afterSwap: this.closest('#update-item').style.display='none'" 
+      class="profile-info bg-gray-800 shadow-md rounded-lg p-6 mb-6">    
+    {% csrf_token %}
+    <div class="bg-gray-800 shadow-md rounded-lg p-6 mb-4 text-white">
+        <h2 class="text-xl font-semibold mb-2">Update Item</h2>
+
+        <div class="mb-4">
+            <label for="id_title" class="block text-sm font-medium text-gray-300">Title</label>
+            {{ form.title|add_class:"mt-1 block w-full rounded-md border-gray-700 bg-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_description" class="block text-sm font-medium text-gray-300">Description</label>
+            {{ form.description|add_class:"mt-1 block w-full rounded-md border-gray-700 bg-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_image" class="block text-sm font-medium text-gray-300">Image (optional)</label>
+            {{ form.image|add_class:"mt-1 block w-full rounded-md border-gray-700 bg-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" }}
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Update</button>
+    </div>
+</form>
+
+<div id="item-update-response" class="mt-4"></div>
