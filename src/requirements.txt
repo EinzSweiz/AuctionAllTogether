@@ -20,6 +20,6 @@ Celery
 django-celery-beat 
 django-celery-results
 redis
-
+flower
 #django-channels - can be added for customer service chat
 #will add django-defender
