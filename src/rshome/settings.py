@@ -125,6 +125,19 @@ if DATABASE_URL is not None:
     }
 
 
+#REDIS CACHE
+
+CACHES = {
+    'default': {
+        "BACKEND": "django_redis.cache.RedisCache",
+        'LOCATION': 'redis://209.38.181.103:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'TIMEOUT': 300,
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -221,3 +234,25 @@ CELERY_BROKER_URL = config('CELERY_BROKER_REDIS_URL', default='redis://209.38.18
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+
+#SMTP CONFIG
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST', cast=str)
+EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default=None)
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str, default=None)
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', cast=str, default=None)
+
+ADMIN_USER_NAME = config('ADMIN_USER_NAME', cast=str, default='Admin user')
+ADMIN_USER_EMAIL = config('ADMIN_USER_EMAIL', default=None)
+
+MANAGERS = []
+ADMINS = []
+
+if all([ADMIN_USER_EMAIL, ADMIN_USER_NAME]):
+    ADMINS += [
+        (f'{ADMIN_USER_NAME}', f'{ADMIN_USER_EMAIL}')
+    ]
+    MANAGERS = ADMINS

@@ -32,6 +32,8 @@ class Item(models.Model):
         self.status = Status.FINISHED
         self.save()
     
+
+    @property
     def actual_price(self):
         return f'{self.starting_price}$'
     
