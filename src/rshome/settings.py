@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     #myapps
     'auctions.apps.AuctionsConfig',
     'customers.apps.CustomersConfig',
+    'bids.apps.BidsConfig',
 ]
 SITE_ID = 1
 

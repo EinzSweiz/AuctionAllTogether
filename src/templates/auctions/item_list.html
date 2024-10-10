@@ -2,14 +2,13 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
-
 <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
     <span class="sr-only">Open sidebar</span>
     <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-    <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
     </svg>
- </button>
- <div class="grid grid-cols-1 md:grid-cols-10">
+</button>
+<div class="grid grid-cols-1 md:grid-cols-10">
     <!-- Sidebar Section (3/10 of the width) -->
     <div class="md:col-span-3">
         {% include 'snippets/side_bar.html' %}
@@ -19,36 +18,106 @@
     <div class="md:col-span-7">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {% for item in items %}
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <a href="{{ item.get_absolute_url }}">
+                    {% if item.images.all %}
+                        <img class="rounded-t-lg object-cover h-48 w-full" src="{{ item.images.all.0.image.url }}" alt="{{ item.title }}">
+                    {% else %}
+                        <img class="rounded-t-lg object-cover h-48 w-full" src="https://via.placeholder.com/300" alt="Placeholder Image">
+                    {% endif %}
+                </a>
+                <div class="p-5">
                     <a href="{{ item.get_absolute_url }}">
-                        {% if item.images.all %}
-                            <img class="rounded-t-lg object-cover h-48 w-full" src="{{ item.images.all.0.image.url }}" alt="{{ item.title }}">
-                        {% else %}
-                            <img class="rounded-t-lg object-cover h-48 w-full" src="https://via.placeholder.com/300" alt="Placeholder Image">
-                        {% endif %}
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.title }}</h5>
                     </a>
-                    <div class="p-5">
-                        <a href="{{ item.get_absolute_url }}">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.title }}</h5>
-                        </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ item.description }}</p>
-                        <p class="mb-3 font-bold text-gray-700 dark:text-gray-400">Starting Price: ${{ item.starting_price }}</p>
-                        <a href="{{ item.get_absolute_url }}" 
-                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                           aria-label="Check and Bid on {{ item.title }}">
-                            Check and Bid Now
-                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                            </svg>
-                        </a>
-                    </div>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ item.description }}</p>
+                    <p class="mb-3 font-bold text-gray-700 dark:text-gray-400">
+                        {% if item.bid_set.first %}
+                        Actual Bid: ${{ item.bid_set.first.amount }}
+                        {% else %}
+                        Starting Price: ${{ item.starting_price }}
+                        {% endif %}
+                    </p>
+                    <!-- Countdown Timer -->
+                    <div id="countdown-{{ item.pk }}" class="mb-3 font-bold text-green-600 dark:text-green-400"></div>
+
+                    <a href="{{ item.get_absolute_url }}" 
+                       class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                       aria-label="Check and Bid on {{ item.title }}">
+                        Check and Bid Now
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </a>
                 </div>
+            </div>
+
+            <script>
+                // JavaScript to handle countdown
+                (function() {
+                    const endTime = new Date("{{ item.end_date|date:'Y-m-d H:i:s' }}").getTime();
+                    const countdownElement = document.getElementById('countdown-{{ item.pk }}');
+
+                    function updateCountdown() {
+                        const now = new Date().getTime();
+                        const distance = endTime - now;
+
+                        if (distance < 0) {
+                            countdownElement.innerHTML = "Auction Ended";
+                            clearInterval(timerInterval);
+                            return;
+                        }
+
+                        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                        countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    }
+
+                    const timerInterval = setInterval(updateCountdown, 1000);
+                    updateCountdown(); // Call once immediately to avoid delay
+                })(); // Immediately Invoked Function Expression (IIFE) to scope the timer
+            </script>
             {% empty %}
-                <p class="text-center col-span-full">No items available.</p>
+            <p class="text-center col-span-full">No items available.</p>
             {% endfor %}
         </div>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation example" class="mt-4">
+            <ul class="inline-flex -space-x-px text-sm">
+                {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?page=1" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">First</a>
+                    </li>
+                    <li>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    </li>
+                {% endif %}
+        
+                {% for num in page_obj.paginator.page_range %}
+                    <li>
+                        {% if num == page_obj.number %}
+                            <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">{{ num }}</a>
+                        {% else %}
+                            <a href="?page={{ num }}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ num }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+        
+                {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    </li>
+                    <li>
+                        <a href="?page={{ page_obj.paginator.num_pages }}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Last</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        
     </div>
 </div>
-
-
 {% endblock %}

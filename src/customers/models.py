@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from auctions.models import AuctionHistory, ItemImage
+from bids.models import AuctionHistory
+from auctions.models import ItemImage
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

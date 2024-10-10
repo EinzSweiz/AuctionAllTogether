@@ -15,7 +15,7 @@ class ItemList(ListView):
     model = Item
     template_name = 'auctions/item_list.html'
     context_object_name = 'items'
-    paginate_by = 5
+    paginate_by = 3
 
     def get_queryset(self):
         return Item.objects.filter(status=Status.ON_SALE).order_by('created_at')

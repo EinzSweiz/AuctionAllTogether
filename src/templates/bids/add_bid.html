@@ -1,0 +1,31 @@
+
+<div class="container mx-auto mt-10 flex flex-col items-center">
+    <h2 class="text-2xl font-bold mb-6 text-center">Add a New Bid</h2>
+    
+    <!-- Display last highest bid price -->
+    <div class="bg-black text-white text-center rounded-lg p-4 mb-6 w-full max-w-md">
+        <p class="text-lg">Last Highest Bid Price: ${{ last_highest_bid_price }}</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+        <form method="POST"
+        hx-post="{% url 'bids:add_bid' item.id %}" 
+                hx-target="#update-bid" 
+                hx-swap="innerHTML" 
+                hx-trigger='click'>
+            {% csrf_token %}
+            <div class="grid grid-cols-1 gap-4">
+                {{ form.non_field_errors }}  <!-- Display form-wide errors -->
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                        {{ field }}  <!-- Render the form field -->
+                        {{ field.errors }}  <!-- Display field-specific errors -->
+                        <p class="mt-1 text-sm text-gray-600">{{ field.help_text }}</p> <!-- Optional help text -->
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="mt-6 w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-200">Submit Bid</button>
+        </form>
+    </div>
+</div>
