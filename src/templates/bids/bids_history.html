@@ -1,17 +1,27 @@
 {% extends 'base.html' %}
-{% block content %}
-<h1>Bidding History for {{ bids.first.item.title }}</h1>
+{% load custom_filters %}
 
-<ul>
-    {% for bid in bids %}
-        <li>
-            {{ bid.bidder.username }}: ${{ bid.amount }} on {{ bid.created_at }}
-        </li>
-    {% endfor %}
-</ul>
+{% block content %}
+<h1 class="text-center">Bidding History for {{ item.title }}</h1>  {# Use 'item' here #}
+
+<div class="text-center">
+    <ul class="mx-auto">
+        {% if bids %}
+            <ul>
+                {% for bid in bids %}
+                    <li class="{% if forloop.first %}text-green-600{% else %}text-red-600{% endif %}">
+                        {{ bid.bidder.username }}: ${{ bid.amount }} on {{ bid.created_at }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <li>No bids available.</li>
+        {% endif %}
+    </ul>
+</div>
 
 {% if is_paginated %}
-    <div class="pagination">
+    <div class="pagination text-center mt-4">
         <span class="step-links">
             {% if page_obj.has_previous %}
                 <a href="?page=1">&laquo; first</a>

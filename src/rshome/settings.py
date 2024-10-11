@@ -208,6 +208,15 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 ALLAUTH_UI_THEME = "dark"
+# Email settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Require verification during signup
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Log in user after confirmation
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'  # Redirect to home for anonymous users
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'  # Redirect to home for authenticated users
+ACCOUNT_EMAIL_NOTIFICATIONS = True  # Notify about account changes
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True  # Log in user after password reset
+
 
 LOGIN_REDIRECT_URL = reverse_lazy('customers:profile')
 

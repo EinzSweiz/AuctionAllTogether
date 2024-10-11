@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy
 from auctions.models import Item
 from django.views.generic import ListView, CreateView
 from .models import AuctionHistory, Bid
 from .forms import BidCreateForm
 from django_htmx.http import HttpResponseClientRefresh
+from .tasks import send_rebid_notification
+from django.contrib import messages
 
 class BidsHistory(ListView):
     model = AuctionHistory
@@ -14,7 +15,13 @@ class BidsHistory(ListView):
 
     def get_queryset(self):
         item_id = self.kwargs['item_id']
-        return Bid.objects.filter(item_id=item_id)
+        return Bid.objects.filter(item_id=item_id).order_by('-amount')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        item_id = self.kwargs['item_id']
+        context['item'] = Item.objects.get(id=item_id)
+        return context
     
 
 class AddBid(CreateView):
@@ -38,10 +45,15 @@ class AddBid(CreateView):
         if existing_bid:
             existing_bid.amount = form.cleaned_data['amount']
             existing_bid.save()
+            send_rebid_notification.delay(existing_bid.id)  # Send notification via Celery
+            messages.success(self.request, 'Your bid has been updated successfully.')
             return HttpResponseClientRefresh()
-        
+
         form.instance.item = item
         form.instance.bidder = self.request.user
+        bid = form.save()
+        send_rebid_notification.delay(bid.id)
+        messages.success(self.request, 'Your bid has been placed successfully.')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
