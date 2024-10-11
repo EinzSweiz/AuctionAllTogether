@@ -10,7 +10,6 @@ pillow
 psycopg2-binary
 whitenoise
 django-tailwind[reload]
-django-debug-toolbar
 django-allauth-ui
 django-widget-tweaks
 slippers

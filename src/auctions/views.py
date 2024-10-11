@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponseForbidden
 from django.http.response import HttpResponse as HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
 from .models import Item, Status, ItemImage
@@ -11,6 +11,9 @@ from django_htmx.http import HttpResponseClientRefresh
 from .tasks import send_item_created_email, send_item_updated_email, send_delete_confirmation_email
 from helpers.token_helpers import generate_delete_token, validate_delete_token
 from django.contrib.sites.shortcuts import get_current_site
+from django.apps import apps
+import logging
+logger = logging.getLogger(__name__)
 class ItemList(ListView):
     model = Item
     template_name = 'auctions/item_list.html'
@@ -23,6 +26,13 @@ class ItemList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Auction Items'
+        ClassBid = apps.get_model('bids', 'Bid')
+        last_bids = {}
+        for item in context['items']:
+            last_bid = ClassBid.get_last_bid(item=item)
+            logger.info(f"Item ID: {item.id}, Last Bid: {last_bid}") 
+            last_bids[item.id] = last_bid
+        context["last_bids"] = last_bids
         return context
 
 class ItemDetail(LoginRequiredMixin, DetailView):
@@ -34,8 +44,11 @@ class ItemDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.title
+        ClassBid = apps.get_model('bids', 'Bid')
+        self.object = self.get_object()
+        context['last_bid'] = ClassBid.get_last_bid(self.object) 
         return context
-    
+            
 
 class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item

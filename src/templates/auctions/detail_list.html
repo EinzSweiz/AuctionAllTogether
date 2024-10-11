@@ -11,11 +11,15 @@
         <h5 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {{ item.title }}
         </h5>
-        <div class="mt-4">
-            <span class="text-xl font-bold text-gray-900 dark:text-white">Starting Price: ${{ item.starting_price }}</span>
-        </div>
         <div class="mt-2">
-            <span class="text-xl font-bold text-gray-900 dark:text-white">Actual Price: ${{ item.actual_price }}</span>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">
+                Actual Price: 
+                {% if last_bid %} 
+                    ${{ last_bid.amount }} 
+                {% else %} 
+                    ${{ item.starting_price }} 
+                {% endif %}
+            </span>
         </div>
         <div class="mt-4">
             <p class="text-gray-700 dark:text-gray-400">{{ item.description }}</p>

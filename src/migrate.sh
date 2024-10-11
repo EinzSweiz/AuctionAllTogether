@@ -8,4 +8,3 @@ cd /app/
 # Create superuser if it does not exist
 if ! /opt/venv/bin/python manage.py createsuperuser --email $SUPERUSER_EMAIL --noinput; then
     echo "Superuser creation failed, it may already exist."
-fi

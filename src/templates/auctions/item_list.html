@@ -31,13 +31,21 @@
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.title }}</h5>
                     </a>
                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ item.description }}</p>
-                    <p class="mb-3 font-bold text-gray-700 dark:text-gray-400">
-                        {% if item.bid_set.first %}
-                        Actual Bid: ${{ item.bid_set.first.amount }}
-                        {% else %}
-                        Starting Price: ${{ item.starting_price }}
-                        {% endif %}
-                    </p>
+                    <span class="font-semibold">{{ item.name }}</span>
+                    {% if last_bids.items is not None %}
+                        {% for key, value in last_bids.items %}
+                            {% if item.id == key %}
+                                <span class="text-green-600">Actual Bid: ${{ value.amount }}</span>
+                                <br>
+                                <span class="text-gray-500">Buyer: {{ value.bidder }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        
+                    {% else %}
+                            <span class="text-gray-500">Starting Price: ${{ item.starting_price }}</span>
+                    {% endif  %}
+
+                    
                     <!-- Countdown Timer -->
                     <div id="countdown-{{ item.pk }}" class="mb-3 font-bold text-green-600 dark:text-green-400"></div>
 
